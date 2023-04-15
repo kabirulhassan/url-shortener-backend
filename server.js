@@ -15,6 +15,7 @@ app.use(express.json()); // body parser middleware
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/shorten", require("./routes/shortenRoutes"));
 app.use("/", require("./routes/homeRoutes"));
+app.use("/api/analytics", require("./routes/analyticsRoutes"));
 
 app.use(errorHandler);
 

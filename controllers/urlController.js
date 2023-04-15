@@ -1,7 +1,13 @@
 const asyncHandler = require("express-async-handler");
 const Url = require("../models/urlModel");
 const UAParser = require('ua-parser-js');
-
+/**
+ * @desc Shorten a url(uses shortid to generate a unique short url),
+ * if the url already exists in the database, it returns the existing url,
+ * if user is logged in, it saves the url with user_id
+ * @route POST /api/shorten
+ * @access Public
+ */
 const shortenUrl = asyncHandler( async (req, res) => {
     const longUrl = req.body.longUrl;
     console.log('User', req.user);
@@ -18,7 +24,11 @@ const shortenUrl = asyncHandler( async (req, res) => {
         res.json(createdUrl);
     }
 });
-
+/**
+ * @desc Redirects to the long url
+ * @route GET /:shortUrl
+ * @access Public
+ */
 const redirectUrl = asyncHandler( async (req, res) => {
     const shortUrl = req.params.shortUrl;
     console.log('shortUrl', shortUrl);
@@ -43,7 +53,34 @@ const redirectUrl = asyncHandler( async (req, res) => {
     }
 });
 
+
+/**
+ * @desc Analytics of all the urls for a user
+ * @route GET /api/analytics
+ * @access Private
+ * @returns {Array} Array of urls
+ */
+const getAnalytics = asyncHandler( async (req, res) => {
+    if(!req.user) {
+        res.status(403);
+        throw new Error("Forbidden access, user must be logged in");
+    }
+    const user_id = req.user.id.toString();
+    if(user_id) {
+        Url.find({ user_id }).then(urls => {
+            res.json(urls);
+        }).catch(err => {
+            res.status(500);
+            throw new Error("Internal server error");
+        });
+    }else{
+        res.status(401);
+        throw new Error("Unauthorized access");
+    }
+});
+
 module.exports = {
     shortenUrl,
-    redirectUrl
+    redirectUrl,
+    getAnalytics
 }

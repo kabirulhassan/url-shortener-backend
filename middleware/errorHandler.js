@@ -30,7 +30,7 @@ const errorHandler = (err, req, res, next) => {
             stackTrace: process.env.NODE_ENV == "production" ? null : err.stack,
         });
     } else {
-        console.log("No Error");
+        console.log("No API Error");
     }
 };
 
