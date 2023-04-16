@@ -11,7 +11,7 @@ const UAParser = require('ua-parser-js');
 const shortenUrl = asyncHandler( async (req, res) => {
     const longUrl = req.body.longUrl;
     console.log('User', req.user);
-    const user_id = (req.user.id || 'public').toString();
+    const user_id = (req.user?.id || 'public').toString();
     console.log('user_id', user_id);
 
     const foundUrl = await Url.findOne({ longUrl, user_id });
