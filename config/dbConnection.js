@@ -8,9 +8,9 @@ const connectDB = async () => {
         const mongoDB = process.env.MONGO_DB;
         const mongoCluster = process.env.MONGO_CLUSTER;
         // srv connection string
-        // const mongoURI = `mongodb+srv://${mongoUser}:${mongoPassword}@${mongoCluster}/${mongoDB}?retryWrites=true&w=majority`;
+        const mongoURI = `mongodb+srv://${mongoUser}:${mongoPassword}@${mongoCluster}/${mongoDB}?retryWrites=true&w=majority`;
         // older standard connection string
-        const mongoURI = `mongodb://${mongoUser}:${mongoPassword}@${mongoCluster}/${mongoDB}?retryWrites=true&w=majority`;
+        // const mongoURI = `mongodb://${mongoUser}:${mongoPassword}@${mongoCluster}/${mongoDB}?retryWrites=true&w=majority`;
 
         const connect = await mongoose.connect(mongoURI)
         console.log(`MongoDB Connected: ${connect.connection.host} Database Name: ${connect.connection.name}`);
